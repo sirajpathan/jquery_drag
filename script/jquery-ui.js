@@ -1527,7 +1527,8 @@ $.ui.position = {
 })();
 
 var position = $.ui.position;
-
+    var dgCount = 0;
+    var dpCount = 0;
 
 /*!
  * jQuery UI Draggable 1.11.1
@@ -1590,7 +1591,8 @@ $.widget("ui.draggable", $.ui.mouse, {
 		this._setHandleClassName();
 
 		this._mouseInit();
-                this.element.data({'ogTop':this.element.position().top,'ogLeft':this.element.position().left});
+            this.element.data({'ogTop': this.element.position().top, 'ogLeft': this.element.position().left}).attr('data-id', 'drag_' + dgCount);
+            dgCount++;
 	},
 
 	_setOption: function( key, value ) {
@@ -1659,7 +1661,8 @@ $.widget("ui.draggable", $.ui.mouse, {
 		//Create and append the visible helper
 		this.helper = this._createHelper(event);
 
-		this.helper.addClass("ui-draggable-dragging");
+            this.helper.addClass("ui-draggable-dragging");
+            $('.ui-droppable[data-dropped=' + this.helper.attr('data-id') + ']').removeAttr('data-dropped');
 
 		//Cache the helper size
 		this._cacheHelperProportions();
@@ -1705,7 +1708,6 @@ $.widget("ui.draggable", $.ui.mouse, {
 		//Generate the original position
                 
                 this.revertToOgPos = this._getOgPosition(event);
-                console.log(this.options.revertToOgPos);
                 if(this.options.revertToOgPos){
                     this.originalPosition = this.position = this._getOgPosition(event);
                     
@@ -2579,7 +2581,8 @@ $.widget( "ui.droppable", {
 		greedy: false,
 		hoverClass: false,
 		scope: "default",
-		tolerance: "intersect",
+            tolerance: "intersect",
+            singleItem: false,
 
 		// callbacks
 		activate: null,
@@ -2618,7 +2621,9 @@ $.widget( "ui.droppable", {
 
 		this._addToManager( o.scope );
 
-		o.addClasses && this.element.addClass( "ui-droppable" );
+            o.addClasses && this.element.addClass("ui-droppable");
+            this.element.attr('data-id', 'drop_' + dpCount);
+            dpCount++;
 
 	},
 
@@ -2747,7 +2752,17 @@ $.widget( "ui.droppable", {
 			}
 			if ( this.options.hoverClass ) {
 				this.element.removeClass( this.options.hoverClass );
-			}
+                }
+                if (this.options.singleItem) {
+                    var droppedElem = $(this.element).attr('data-dropped');
+                    var dragattr = $(draggable.element).attr('data-id');
+                    $(this.element).attr('data-dropped', dragattr);
+                    var exElem = $('.ui-draggable[data-id="' + droppedElem + '"]');
+                    exElem.animate(draggable._getOgPosition(event), 300, function() {
+                    });
+                }
+                
+                $(this.element).attr('data-dropped', $(draggable.element).attr('data-id'));
 			this._trigger( "drop", event, this.ui( draggable ) );
 			return this.element;
 		}
