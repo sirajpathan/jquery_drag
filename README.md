@@ -9,4 +9,11 @@ $('.drag').draggable({
     revertToOgPos: true
 });
 
-revertToOgPos values are 'true' or 'false'
+//revertToOgPos values are 'true' or 'false'
+
+
+
+
+$('.drop').droppable({
+    singleItem: true  // this will allow only single item to be dropped into droppable and it will revert the Item which is already dropped.
+});
