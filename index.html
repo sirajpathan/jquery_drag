@@ -23,6 +23,12 @@
                 cursor: pointer;
                 z-index: 1;
             }
+            .dragC:nth-child(1) .drag{
+                background-color: aqua;
+            }
+            .dragC:nth-child(3) .drag{
+                background-color: blanchedalmond;
+            }
             .dropContainer {
                 position: relative;
                 top: 50px;
@@ -54,7 +60,7 @@
                 revertToOgPos: true
             });
             $('.drop').droppable({
-                singleItem: false
+                singleItem: true
             });
 
 

@@ -2583,6 +2583,7 @@ $.widget( "ui.droppable", {
 		scope: "default",
             tolerance: "intersect",
             singleItem: false,
+            dropOnce: false,
 
 		// callbacks
 		activate: null,
