@@ -1,7 +1,7 @@
 jquery_drag
 ===========
 
-jquery ui revert to original position functionality added to plugin<br><br>
+jquery ui revert to original position functionality added to plugin. You need to replace your "jquery-ui" js with my "jquery-ui.js" file<br><br>
 
 
 $('.drag').draggable({<br>
